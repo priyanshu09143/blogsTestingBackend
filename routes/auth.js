@@ -10,7 +10,7 @@ router.post('/register', async (req, res) => {
   if (!username || !password || !email) return res.status(400).json({ message: 'Missing fields' });
   try {
     const hash = await bcrypt.hash(password, 10);
-    const user = await User.create({ username,displayName:username, password: hash, email });
+    const user = await User.create({ username, displayName: username, password: hash, email });
     req.login(user, err => {
       if (err) return res.status(500).json({ message: 'Login error' });
       res.json({ user });
@@ -37,10 +37,10 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 // Google OAuth Callback
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
+  passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_URL}/login` }),
   (req, res) => {
     // Redirect to frontend with session
-    res.redirect('http://localhost:5173/');
+    res.redirect(process.env.FRONTEND_URL);
   }
 );
 
