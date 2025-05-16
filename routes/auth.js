@@ -46,6 +46,9 @@ router.get('/google/callback',
 
 // Get current user
 router.get('/me', (req, res) => {
+  console.log('requesti --->:', req);
+  console.log('Current user:', req.user);
+  console.log('req.isAuthenticated--->:', req.isAuthenticated());
   if (!req.user) return res.status(401).json({ user: null });
   res.json({ user: req.user });
 });
